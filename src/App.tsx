@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { DURATION, doConfetti, getParticleCount } from "./confetti";
 import Card from "./Card";
 import Form from "./Form";
+import Footer from "./Footer";
 
 function App() {
   useEffect(() => {
@@ -29,14 +30,15 @@ function App() {
         className="bg-cover flex justify-center items-center"
         style={{ backgroundImage: `url('./background.png')` }}
       >
-        <div className="max-w-lg">
+        <div className="max-w-lg  bg-white/50 ">
           <figure>
-            <img src="yosiHaya.png" alt="Yosi and Chaya" />
+            <img src="YH.png" alt="Yosi and Chaya" />
           </figure>
           <div className="card bg-white/50 rounded-none">
             <div className="card-dody px-16 pb-16">
               <Card />
               <Form />
+              <Footer />
             </div>
           </div>
         </div>

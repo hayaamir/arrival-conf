@@ -4,4 +4,9 @@
 
 body {
     font-family: 'Open Sans Hebrew', sans-serif;
+    color: #3C4F5B;
+}
+
+#date {
+    color: #BFB58B !important;
 }

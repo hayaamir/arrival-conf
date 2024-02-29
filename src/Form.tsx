@@ -39,64 +39,72 @@ export default function Form() {
 
   return (
     <div>
-      <div className="text-center">
-        <h2>אישור הגעה</h2>
+      <div className="text-center text-lg">
+        <h2 className="font-bold text-2xl">אישור הגעה</h2>
         <p>נשמח לראותכם בין אורחינו</p>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <div className="mt-2">
+          <div className="mt-3">
             <input
               id="first_name"
               type="text"
               placeholder="שם פרטי"
               {...register("first_name", { required: "שם פרטי הינו חובה" })}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-300 sm:text-sm sm:leading-6"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
             />
           </div>
         </div>
         {errors.first_name && <p>{errors.first_name.message}</p>}
 
-        <input
-          type="text"
-          placeholder="שם משפחה"
-          className="input input-bordered input-xs w-full max-w-xs"
-          {...register("last_name", { required: "שם משפחה הינו חובה" })}
-        />
+        <div>
+          <div className="mt-3">
+            <input
+              type="text"
+              placeholder="שם משפחה"
+              {...register("last_name", { required: "שם משפחה הינו חובה" })}
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
+            />
+          </div>
+        </div>
         {errors.last_name && <p>{errors.last_name.message}</p>}
 
-        <input
-          type="tel"
-          placeholder="מספר טלפון נייד"
-          className="input input-bordered input-xs w-full max-w-xs"
-          {...register("phone", {
-            required: "מספר טלפון הוא שדה חובה",
-            pattern: {
-              value: /^[0-9]+$/,
-              message: "מספרים בלבד",
-            },
-            maxLength: {
-              value: 12,
-              message: "אורך מקסימלי 12 ספרות",
-            },
-          })}
-        />
+        <div>
+          <div className="mt-3">
+            <input
+              type="tel"
+              placeholder="מספר טלפון נייד"
+              {...register("phone", {
+                required: "מספר טלפון הוא שדה חובה",
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "מספרים בלבד",
+                },
+                maxLength: {
+                  value: 12,
+                  message: "אורך מקסימלי 12 ספרות",
+                },
+              })}
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right mb-4"
+            />
+          </div>
+        </div>
         {errors.phone && <p>{errors.phone.message}</p>}
 
-        <div>אין צורך לרשום ילדים מגיל שש ומטה *</div>
+        <div>* אין צורך לרשום ילדים מגיל שש ומטה</div>
 
         <label>
-          <div>
+          <div className="text-lg">
             <span>הוסף את שמות בני המשפחה שבאים</span>
           </div>
-          <div className="flex items-end gap-2">
+          <div className="flex items-end gap-2 mb-4">
             <div className="flex flex-col gap-1">
               {fields.map((field, index) => (
                 <input
                   key={field.id}
                   type="text"
                   placeholder="שם מלא"
-                  className="input input-bordered input-sm"
+                  className="input input-bordered input-sm "
                   {...register(`guests.${index}.name`)}
                 />
               ))}
@@ -107,34 +115,38 @@ export default function Form() {
           </div>
         </label>
 
-        <div className="form-control">
-          <label className="label cursor-pointer flex justify-start">
-            <input
-              {...register("coming", { required: true })}
-              type="radio"
-              value="coming"
-              className="radio checked:bg-red-500"
-              name="coming"
-            />
-            <span className="label-text">מגיעים</span>
-          </label>
-        </div>
-        <div className="form-control">
-          <label className="label cursor-pointer flex justify-start">
-            <input
-              {...register("coming", { required: true })}
-              type="radio"
-              value="not_coming"
-              className="radio checked:bg-blue-500"
-              name="coming"
-            />
-            <span className="label-text">לא מגיעים</span>
-          </label>
+        <div className="mb-4">
+          <div className="form-control">
+            <label className="label cursor-pointer flex justify-start">
+              <input
+                {...register("coming", { required: true })}
+                type="radio"
+                value="coming"
+                className="radio "
+                name="coming"
+              />
+              <span className="label-text">מגיעים</span>
+            </label>
+          </div>
+          <div className="form-control">
+            <label className="label cursor-pointer flex justify-start">
+              <input
+                {...register("coming", { required: true })}
+                type="radio"
+                value="not_coming"
+                className="radio"
+                name="coming"
+              />
+              <span className="label-text">לא מגיעים</span>
+            </label>
+          </div>
         </div>
 
-        <div>
+        <div className="text-lg">
           <p>בקשת מנה מיוחדת</p>
+        </div>
 
+        <div className="mb-8">
           <label>
             <div>
               <span>ללא גלוטן</span>
@@ -150,11 +162,16 @@ export default function Form() {
           </label>
         </div>
 
-        <div className="card-actions justify-end">
-          <button className="btn btn-secondary btn-sm" type="submit">
+        <div className="card-actions justify-right mb-4">
+          <button
+            className="btn btn-sm bg-[#3C4F5B] text-white hover:bg-cyan-900	"
+            type="submit"
+          >
             אישור
           </button>
         </div>
+
+        <div>במקרה של שינוי אנא עדכנו את איטה ספרנאי או גלי אמיר🙏</div>
       </form>
     </div>
   );
