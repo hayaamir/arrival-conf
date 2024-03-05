@@ -41,7 +41,7 @@ export default function Card() {
         </p>
       </div>
 
-      <button className="btn btn-outline mb-4">להזמנה מודפסת</button>
+      {/* <button className="btn btn-outline mb-4">להזמנה מודפסת</button> */}
     </div>
   );
 }

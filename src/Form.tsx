@@ -1,40 +1,36 @@
 import { useFieldArray, useForm } from "react-hook-form";
-
+import confetti from "canvas-confetti";
 import Plus from "../public/plus";
-
-export type Inputs = {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  guests: { name: string }[];
-  gluten_free: number;
-  vegan: number;
-  coming: string;
-  not_coming: string;
-};
+import { createGuest } from "./DB/api";
+import { Guest } from "./types";
 
 export default function Form() {
   const {
-    reset,
+    // reset,
     register,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm<Guest>({
     defaultValues: {
       guests: [{ name: "" }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({ name: "guests", control });
+  const { fields, append } = useFieldArray({ name: "guests", control });
 
   const addGuest = () => {
     append({ name: "" });
   };
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data: any) => {
+    await createGuest(data);
+    // reset(); // comment for testing
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
   };
 
   return (
@@ -122,7 +118,7 @@ export default function Form() {
                 {...register("coming", { required: true })}
                 type="radio"
                 value="coming"
-                className="radio "
+                className="radio"
                 name="coming"
               />
               <span className="label-text">מגיעים</span>
@@ -164,7 +160,7 @@ export default function Form() {
 
         <div className="card-actions justify-right mb-4">
           <button
-            className="btn btn-sm bg-[#3C4F5B] text-white hover:bg-cyan-900	"
+            className="btn btn-md bg-[#3c4f5b] text-white 	hover:bg-[#bfb58b]"
             type="submit"
           >
             אישור

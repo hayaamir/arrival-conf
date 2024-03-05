@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     const animationEnd = Date.now() + DURATION;
 
-    const interval = setInterval(() => {
+    const interval: NodeJS.Timeout = setInterval(() => {
       const timeLeft = animationEnd - Date.now();
 
       if (timeLeft <= 0) {
@@ -27,10 +27,10 @@ function App() {
   return (
     <>
       <div
-        className="bg-cover flex justify-center items-center"
+        className="bg-cover flex justify-center items-cente"
         style={{ backgroundImage: `url('./background.png')` }}
       >
-        <div className="max-w-lg  bg-white/5 0 ">
+        <div className="max-w-lg bg-white/60">
           <figure>
             <img src="YH.png" alt="Yosi and Chaya" />
           </figure>
