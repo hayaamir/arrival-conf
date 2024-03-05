@@ -6,7 +6,7 @@ import { Guest } from "./types";
 
 export default function Form() {
   const {
-    // reset,
+    reset,
     register,
     handleSubmit,
     control,
@@ -25,12 +25,13 @@ export default function Form() {
 
   const onSubmit = async (data: any) => {
     await createGuest(data);
-    // reset(); // comment for testing
+    reset();
     confetti({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 },
     });
+    alert("ההרשמה נקלטה בהצלחה!");
   };
 
   return (
@@ -46,24 +47,55 @@ export default function Form() {
               id="first_name"
               type="text"
               placeholder="שם פרטי"
-              {...register("first_name", { required: "שם פרטי הינו חובה" })}
+              {...register("first_name", {
+                required: "שדה חובה, אנא הזן שם פרטי",
+                minLength: {
+                  value: 2,
+                  message: "שם פרטי קצר מדי, אנא הזן לפחות 2 תווים",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "שם פרטי ארוך מדי, אנא הזן עד 15 תווים",
+                },
+                pattern: {
+                  value: /[\u05D0-\u05EA]+/i,
+                  message:
+                    "שם פרטי מכיל תווים שאינם אותיות בעברית, אנא נסה שוב",
+                },
+              })}
+              aria-invalid={errors.first_name ? "true" : "false"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
             />
+            {errors.first_name && <p>{errors.first_name.message}</p>}
           </div>
         </div>
-        {errors.first_name && <p>{errors.first_name.message}</p>}
 
         <div>
           <div className="mt-3">
             <input
               type="text"
               placeholder="שם משפחה"
-              {...register("last_name", { required: "שם משפחה הינו חובה" })}
+              {...register("last_name", {
+                required: "שם משפחה הינו חובה",
+                minLength: {
+                  value: 2,
+                  message: "שם משפחה חייב להכיל לפחות 2 תווים",
+                },
+                maxLength: {
+                  value: 15,
+                  message: "שם משפחה לא יכול להכיל יותר מ-10 תווים",
+                },
+                pattern: {
+                  value: /[\u05D0-\u05EA]+/i,
+                  message: "נא להזין שם משפחה בעברית בלבד",
+                },
+              })}
+              aria-invalid={errors.last_name ? "true" : "false"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
             />
+            {errors.last_name && <p>{errors.last_name.message}</p>}
           </div>
         </div>
-        {errors.last_name && <p>{errors.last_name.message}</p>}
 
         <div>
           <div className="mt-3">
@@ -73,14 +105,11 @@ export default function Form() {
               {...register("phone", {
                 required: "מספר טלפון הוא שדה חובה",
                 pattern: {
-                  value: /^[0-9]+$/,
-                  message: "מספרים בלבד",
-                },
-                maxLength: {
-                  value: 12,
-                  message: "אורך מקסימלי 12 ספרות",
+                  value: /^(05\d{8}|0\d{9})$/,
+                  message: "אנא הזן מספר תקין",
                 },
               })}
+              aria-invalid={errors.phone ? "true" : "false"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right mb-4"
             />
           </div>
@@ -136,6 +165,9 @@ export default function Form() {
               <span className="label-text">לא מגיעים</span>
             </label>
           </div>
+          {errors.coming && (
+            <p>{errors.coming.message || "חובה לבחור אחת מהאפשרויות"}</p>
+          )}
         </div>
 
         <div className="text-lg">
@@ -147,14 +179,36 @@ export default function Form() {
             <div>
               <span>ללא גלוטן</span>
             </div>
-            <input type="number" placeholder="0" {...register("gluten_free")} />
+            <input
+              type="number"
+              placeholder="0"
+              {...register("gluten_free", {
+                validate: (value) => {
+                  if (value < 0 || value > 10 || isNaN(value)) {
+                    return "ניתן להזמין עד עשר מנות ללא גלוטן, במקרה הצורך אנא צור קשר עם איטה ספרנאי או גלי אמיר";
+                  }
+                },
+              })}
+            />
+            {errors.gluten_free && <p>{errors.gluten_free.message}</p>}
           </label>
 
           <label>
             <div>
               <span>טבעוני</span>
             </div>
-            <input type="number" placeholder="0" {...register("vegan")} />
+            <input
+              type="number"
+              placeholder="0"
+              {...register("vegan", {
+                validate: (value) => {
+                  if (value < 0 || value > 10 || isNaN(value)) {
+                    return "ניתן להזמין עד עשר מנות ללא גלוטן, במקרה הצורך אנא צור קשר עם איטה ספרנאי או גלי אמיר";
+                  }
+                },
+              })}
+            />
+            {errors.vegan && <p>{errors.vegan.message}</p>}
           </label>
         </div>
 
