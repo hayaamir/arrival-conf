@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import MapPin from "../../public/map-pin";
+import MapPin from "../icons/map-pin";
 
 export default function Card() {
   return (

@@ -6,7 +6,7 @@ export default function Confirm() {
         style={{ backgroundImage: `url('./background.png')` }}
       >
         <div className="text-lg text-center flex flex-col justify-center items-center">
-          <img src="public/Wine glasses.png" width="300" alt="Wine glasses" />
+          <img src="/Wine glasses.png" width="300" alt="Wine glasses" />
           <p className="text-xl	font-bold	">תודה רבה על העדכון</p>
           <p>
             במידה וחלה טעות בפרטים או בכל מקרה של שינוי, אנו פנו אל גלי אמיר

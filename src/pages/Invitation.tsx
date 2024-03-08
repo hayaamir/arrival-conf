@@ -5,7 +5,7 @@ export default function Invitation() {
       style={{ backgroundImage: `url('./background.png')` }}
     >
       <img
-        src="public/Invitation.png"
+        src="/Invitation.png"
         alt="Invitation"
         className="object-fill w-2/4 drop-shadow-xl"
       ></img>
