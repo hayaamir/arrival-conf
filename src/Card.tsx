@@ -1,5 +1,4 @@
 import MapPin from "../public/map-pin";
-import { Link } from "react-router-dom";
 
 export default function Card() {
   return (
