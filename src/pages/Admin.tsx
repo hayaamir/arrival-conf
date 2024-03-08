@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getGuests } from "./DB/api";
-import { Guest } from "./types";
+import { getGuests } from "../DB/api";
+import { Guest } from "../types";
 
 export default function Admin() {
   const [guestsArray, setGuests] = useState<Guest[]>([]);

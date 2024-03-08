@@ -1,10 +1,10 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
-import Plus from "../public/plus";
-import { createGuest } from "./DB/api";
-import { Guest } from "./types";
-import ErrorBar from "./components/ErrorBar";
+import Plus from "../../public/plus";
+import { createGuest } from "../DB/api";
+import { Guest } from "../types";
+import ErrorBar from "./ErrorBar";
 
 export default function Form() {
   const navigate = useNavigate();

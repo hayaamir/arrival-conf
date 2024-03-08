@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { DURATION, doConfetti, getParticleCount } from "./confetti";
-import Card from "./Card";
-import Form from "./Form";
-import Footer from "./Footer";
+import { DURATION, doConfetti, getParticleCount } from "../helpers/confetti";
+import Card from "../components/Card";
+import Form from "../components/Form";
+import Footer from "../components/Footer";
 
 function App() {
   useEffect(() => {

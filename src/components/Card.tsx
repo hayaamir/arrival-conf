@@ -1,4 +1,6 @@
-import MapPin from "../public/map-pin";
+import { Link } from "react-router-dom";
+
+import MapPin from "../../public/map-pin";
 
 export default function Card() {
   return (
@@ -41,16 +43,11 @@ export default function Card() {
         </p>
       </div>
 
-      {/* <Link to={"Invitation"}>
+      <Link to={"Invitation"} target="_blank">
         <button className="btn btn-outline mt-10 text-[#3C4F5B] hover:bg-[#3C4F5B] border-[#3C4F5B]">
           להזמנה מודפסת
         </button>
-      </Link> */}
-      <a href="/invitation" target="_blank" rel="noopener noreferrer">
-        <button className="btn btn-outline mt-10 text-[#3C4F5B] hover:bg-[#3C4F5B] border-[#3C4F5B]">
-          להזמנה מודפסת
-        </button>
-      </a>
+      </Link>
     </div>
   );
 }
