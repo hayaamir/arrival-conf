@@ -7,4 +7,5 @@ export type Guest = {
   vegan: number;
   coming: string;
   not_coming?: string;
+  email: string;
 };

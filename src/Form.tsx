@@ -1,15 +1,20 @@
 import { useFieldArray, useForm } from "react-hook-form";
-import confetti from "canvas-confetti";
+import { useNavigate } from "react-router-dom";
+
 import Plus from "../public/plus";
 import { createGuest } from "./DB/api";
 import { Guest } from "./types";
+import ErrorBar from "./components/ErrorBar";
 
 export default function Form() {
+  const navigate = useNavigate();
+
   const {
     reset,
     register,
     handleSubmit,
     control,
+    setError,
     formState: { errors },
   } = useForm<Guest>({
     defaultValues: {
@@ -24,14 +29,14 @@ export default function Form() {
   };
 
   const onSubmit = async (data: any) => {
-    await createGuest(data);
-    reset();
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.6 },
-    });
-    alert("ההרשמה נקלטה בהצלחה!");
+    const error = await createGuest(data);
+    if (error) {
+      setError("root", error);
+      alert("ניתן לאשר הגעה פעם אחת בלבד, מייל זה כבר מופיע במערכת");
+    } else {
+      reset();
+      navigate("/Confirm");
+    }
   };
 
   return (
@@ -40,15 +45,15 @@ export default function Form() {
         <h2 className="font-bold text-2xl">אישור הגעה</h2>
         <p>נשמח לראותכם בין אורחינו</p>
       </div>
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <div className="mt-3">
             <input
-              id="first_name"
               type="text"
               placeholder="שם פרטי"
               {...register("first_name", {
-                required: "שדה חובה, אנא הזן שם פרטי",
+                required: "שם פרטי הינו חובה",
                 minLength: {
                   value: 2,
                   message: "שם פרטי קצר מדי, אנא הזן לפחות 2 תווים",
@@ -58,7 +63,7 @@ export default function Form() {
                   message: "שם פרטי ארוך מדי, אנא הזן עד 15 תווים",
                 },
                 pattern: {
-                  value: /[\u05D0-\u05EA]+/i,
+                  value: /^[א-ת]+$/i,
                   message:
                     "שם פרטי מכיל תווים שאינם אותיות בעברית, אנא נסה שוב",
                 },
@@ -66,8 +71,8 @@ export default function Form() {
               aria-invalid={errors.first_name ? "true" : "false"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
             />
-            {errors.first_name && <p>{errors.first_name.message}</p>}
           </div>
+          <ErrorBar error={errors.first_name} />
         </div>
 
         <div>
@@ -79,22 +84,23 @@ export default function Form() {
                 required: "שם משפחה הינו חובה",
                 minLength: {
                   value: 2,
-                  message: "שם משפחה חייב להכיל לפחות 2 תווים",
+                  message: "שם משפחה קצר מדי, אנא הזן לפחות 2 תווים",
                 },
                 maxLength: {
                   value: 15,
-                  message: "שם משפחה לא יכול להכיל יותר מ-10 תווים",
+                  message: "שם משפחה ארוך מדי, אנא הזן עד 15 תווים",
                 },
                 pattern: {
-                  value: /[\u05D0-\u05EA]+/i,
-                  message: "נא להזין שם משפחה בעברית בלבד",
+                  value: /^[א-ת]+$/i,
+                  message:
+                    "שם משפחה מכיל תווים שאינם אותיות בעברית, אנא נסה שוב",
                 },
               })}
               aria-invalid={errors.last_name ? "true" : "false"}
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6"
             />
-            {errors.last_name && <p>{errors.last_name.message}</p>}
           </div>
+          <ErrorBar error={errors.last_name} />
         </div>
 
         <div>
@@ -103,18 +109,37 @@ export default function Form() {
               type="tel"
               placeholder="מספר טלפון נייד"
               {...register("phone", {
-                required: "מספר טלפון הוא שדה חובה",
+                required: "מספר טלפון הינו חובה",
                 pattern: {
                   value: /^(05\d{8}|0\d{9})$/,
                   message: "אנא הזן מספר תקין",
                 },
               })}
               aria-invalid={errors.phone ? "true" : "false"}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right mb-4"
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right"
+            />
+          </div>
+          <ErrorBar error={errors.phone} />
+        </div>
+
+        <div>
+          <div className="mt-3">
+            <input
+              type="email"
+              placeholder="אימייל"
+              {...register("email", {
+                required: "אימייל הינו חובה",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "ישנה טעות בכתובת המייל, אנא נסה שוב",
+                },
+              })}
+              aria-invalid={errors.email ? "true" : "false"}
+              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right"
             />
           </div>
         </div>
-        {errors.phone && <p>{errors.phone.message}</p>}
+        <ErrorBar error={errors.email} />
 
         <div>* אין צורך לרשום ילדים מגיל שש ומטה</div>
 
@@ -125,18 +150,46 @@ export default function Form() {
           <div className="flex items-end gap-2 mb-4">
             <div className="flex flex-col gap-1">
               {fields.map((field, index) => (
-                <input
-                  key={field.id}
-                  type="text"
-                  placeholder="שם מלא"
-                  className="input input-bordered input-sm "
-                  {...register(`guests.${index}.name`)}
-                />
+                <div key={field.id}>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="שם מלא"
+                      className="input input-bordered input-sm"
+                      {...register(`guests.${index}.name`, {
+                        minLength: {
+                          value: 2,
+                          message: "שם מלא קצר מדי, אנא הזן לפחות שני תווים",
+                        },
+                        maxLength: {
+                          value: 15,
+                          message: "שם מלא ארוך מדי, אנא הזן עד 15 תווים",
+                        },
+                        pattern: {
+                          value: /^[א-ת]+$/i,
+                          message: "אנא הזן שם בעברית בלבד",
+                        },
+                      })}
+                    />
+                    {index === fields.length - 1 && (
+                      <button className="w-6 cursor-pointer" onClick={addGuest}>
+                        <Plus />
+                      </button>
+                    )}
+                  </div>
+                  {errors && errors.guests && errors.guests[index]?.name && (
+                    <div
+                      className="px-4 py-1 mb-4 ml-8 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                      role="alert"
+                    >
+                      <span className="font-medium">
+                        {errors?.guests[index]?.name?.message}
+                      </span>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
-            <button className="w-6 cursor-pointer" onClick={addGuest}>
-              <Plus />
-            </button>
           </div>
         </label>
 
@@ -165,10 +218,17 @@ export default function Form() {
               <span className="label-text">לא מגיעים</span>
             </label>
           </div>
-          {errors.coming && (
-            <p>{errors.coming.message || "חובה לבחור אחת מהאפשרויות"}</p>
-          )}
         </div>
+        {errors.coming && (
+          <div
+            className="px-4 py-1  mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            role="alert"
+          >
+            <span className="font-medium">
+              {errors.coming.message || "אנא בחר באחת מהאפשרויות"}
+            </span>
+          </div>
+        )}
 
         <div className="text-lg">
           <p>בקשת מנה מיוחדת</p>
@@ -190,7 +250,7 @@ export default function Form() {
                 },
               })}
             />
-            {errors.gluten_free && <p>{errors.gluten_free.message}</p>}
+            <ErrorBar error={errors.gluten_free} />
           </label>
 
           <label>
@@ -208,7 +268,7 @@ export default function Form() {
                 },
               })}
             />
-            {errors.vegan && <p>{errors.vegan.message}</p>}
+            <ErrorBar error={errors.vegan} />
           </label>
         </div>
 

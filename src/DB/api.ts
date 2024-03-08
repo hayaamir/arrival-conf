@@ -1,5 +1,5 @@
-import { Guest } from "../types";
 import supabase from "./supabase";
+import { Guest } from "../types";
 
 export async function getGuests() {
   const { data: guests, error } = await supabase.from("guests").select("*");
@@ -15,9 +15,9 @@ export async function createGuest(guest: Guest) {
   };
   delete dbGuest.not_coming;
 
-  console.log(dbGuest);
+  const { error } = await supabase.from("guests").insert([dbGuest]);
 
-  await supabase.from("guests").insert([dbGuest]);
+  return error;
 }
 
 // use to get notification when new guest register
