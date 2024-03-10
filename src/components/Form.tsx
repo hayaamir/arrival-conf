@@ -234,7 +234,7 @@ export default function Form() {
           <p>בקשת מנה מיוחדת</p>
         </div>
 
-        <div className="mb-6 flex justify-between gap-3">
+        <div className="mb-6  gap-3">
           <label>
             <div>
               <span>ללא גלוטן</span>

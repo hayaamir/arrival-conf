@@ -9,10 +9,12 @@ export default function Card() {
         אנו שמחים ונרגשים להזמין אתכם לחגוג עמנו את יום נישואינו
       </p>
 
+      <div className="mb-4 text-lg">
+        <p>07.04.2024</p>
+      </div>
+
       <div className="mb-4">
-        <p className="text-2xl">יום ראשון</p>
-        <p className="text-3xl font-bold">כ"ח אדר ב' התשפ"ד</p>
-        <p className="text-xl">- 07.04.2024 -</p>
+        <p className="text-3xl">יום ראשון - כ"ח אדר ב' התשפ"ד</p>
       </div>
 
       <div className="mb-4 text-lg">
