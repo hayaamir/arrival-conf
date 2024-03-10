@@ -29,7 +29,11 @@ export default function Admin() {
   const guestsNumber = useMemo(() => {
     return guestsArray.reduce((a, c) => {
       if (c.coming) {
-        return a + 1 + c.guests.length;
+        if (c.guests && c.guests.length > 0 && c.guests[0].name !== "") {
+          return a + 1 + c.guests.length;
+        } else {
+          return a + 1;
+        }
       }
       return a;
     }, 0);
