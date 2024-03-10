@@ -138,12 +138,15 @@ export default function Form() {
         </div>
 
         <label>
-          <div className="text-lg mt-4">
+          <div className="text-lg mt-6">
             <span>הוסף את שמות בני המשפחה שבאים</span>
           </div>
-          <p>אנא וודא שכל אדם נרשם פעם אחת בלבד</p>
 
-          <div className="mt-2 mb-2">* אין צורך לרשום ילדים מגיל שש ומטה</div>
+          <div className=" mb-2 text-sm">
+            <p className="text-sm">* אנא וודא שכל אדם נרשם פעם אחת בלבד</p>
+            <p>* אין צורך לרשום ילדים מגיל שש ומטה</p>
+          </div>
+
           <div className="flex items-end gap-2 mb-4">
             <div className="flex flex-col gap-1">
               {fields.map((field, index) => (
@@ -200,7 +203,7 @@ export default function Form() {
                 className="radio"
                 name="coming"
               />
-              <span className="label-text">מגיעים</span>
+              <span className="label-text mr-2">מגיעים</span>
             </label>
           </div>
           <div className="form-control">
@@ -212,13 +215,13 @@ export default function Form() {
                 className="radio"
                 name="coming"
               />
-              <span className="label-text">לא מגיעים</span>
+              <span className="label-text mr-2">לא מגיעים</span>
             </label>
           </div>
         </div>
         {errors.coming && (
           <div
-            className="px-4 py-1  mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+            className="px-4 py-1 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
             role="alert"
           >
             <span className="font-medium">
@@ -231,12 +234,13 @@ export default function Form() {
           <p>בקשת מנה מיוחדת</p>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-6 flex justify-between gap-3">
           <label>
             <div>
               <span>ללא גלוטן</span>
             </div>
             <input
+              className="input input-bordered input-sm w-44"
               type="number"
               placeholder="0"
               {...register("gluten_free", {
@@ -252,6 +256,7 @@ export default function Form() {
               <span>טבעוני</span>
             </div>
             <input
+              className="input input-bordered input-sm w-44"
               type="number"
               placeholder="0"
               {...register("vegan", {
@@ -263,16 +268,18 @@ export default function Form() {
           </label>
         </div>
 
-        <div className="card-actions justify-right mb-4">
+        <div className="card-actions flex justify-center mb-8">
           <button
-            className="btn btn-md bg-[#3c4f5b] text-white hover:bg-[#bfb58b]"
+            className="btn btn-sm px-8 bg-[#3c4f5b] text-white hover:bg-[#bfb58b]"
             type="submit"
           >
             אישור
           </button>
         </div>
 
-        <div>במקרה של שינוי אנא עדכנו את איטה ספרנאי או גלי אמיר🙏</div>
+        <div className="text-sm text-center">
+          במקרה של שינוי אנא עדכנו את איטה ספרנאי או גלי אמיר🙏
+        </div>
       </form>
     </div>
   );

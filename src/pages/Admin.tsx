@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { getGuests } from "../DB/api";
 import { Guest } from "../types";
+import supabase from "../DB/supabase";
 
 export default function Admin() {
   const [guestsArray, setGuests] = useState<Guest[]>([]);
@@ -9,6 +10,23 @@ export default function Admin() {
 
   useEffect(() => {
     allGuests();
+  }, []);
+
+  useEffect(() => {
+    const sub = supabase
+      .channel("custom-update-channel")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "guests" },
+        (payload) => {
+          setGuests((prev) => [...prev, payload.new as Guest]);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      sub.unsubscribe();
+    };
   }, []);
 
   async function allGuests() {
