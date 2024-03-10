@@ -30,7 +30,7 @@ function App() {
         className="bg-cover flex justify-center items-cente"
         style={{ backgroundImage: `url('./background.png')` }}
       >
-        <div className="max-w-md bg-white/60">
+        <div className="max-w-sm bg-white/60">
           <figure>
             <img src="YH.png" alt="Yosi and Chaya" />
           </figure>
