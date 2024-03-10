@@ -137,12 +137,13 @@ export default function Form() {
           <ErrorBar error={errors.phone} />
         </div>
 
-        <div>* אין צורך לרשום ילדים מגיל שש ומטה</div>
-
         <label>
-          <div className="text-lg">
+          <div className="text-lg mt-4">
             <span>הוסף את שמות בני המשפחה שבאים</span>
           </div>
+          <p>אנא וודא שכל אדם נרשם פעם אחת בלבד</p>
+
+          <div className="mt-2 mb-2">* אין צורך לרשום ילדים מגיל שש ומטה</div>
           <div className="flex items-end gap-2 mb-4">
             <div className="flex flex-col gap-1">
               {fields.map((field, index) => (

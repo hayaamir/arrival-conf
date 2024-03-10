@@ -10,19 +10,23 @@ export default function Card() {
       </p>
 
       <div className="mb-4 text-lg">
-        <p>יום ראשון - כ"ח אדר ב' התשפ"ד</p>
+        <p>07.04.2024</p>
       </div>
 
       <div className="mb-4">
-        <p className="text-5xl">07.04.2024</p>
+        <p className="text-3xl">יום ראשון - כ"ח אדר ב' התשפ"ד</p>
       </div>
 
       <div className="mb-4 text-lg">
         <p>גן האירועים רוקח</p>
         <div className="flex items-center justify-center gap-1">
-          <div className="w-5">
+          <a
+            href="https://maps.app.goo.gl/a77caaYRJ99FSJsL6"
+            className="w-5"
+            target="_blank"
+          >
             <MapPin />
-          </div>
+          </a>
           <p>תל אביב, ישראל</p>
         </div>
       </div>
@@ -34,12 +38,12 @@ export default function Card() {
 
       <div className="flex justify-between mx-auto max-w-80 text-lg">
         <p className="flex flex-col">
-          <span className="font-bold leading-3">הורי הכלה</span>
-          <span>אלקנה ואיטה</span>
+          <span className="font-bold leading-3">הורי החתן</span>
+          <span>לירון וגלי אמיר</span>
         </p>
         <p className="flex flex-col">
-          <span className="font-bold leading-3">הורי החתן</span>
-          <span>לירון וגלי</span>
+          <span className="font-bold leading-3">הורי הכלה</span>
+          <span>אלקנה ואיטה ספרנאי</span>
         </p>
       </div>
 
