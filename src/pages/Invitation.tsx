@@ -7,7 +7,7 @@ export default function Invitation() {
       <img
         src="/Invitation.png"
         alt="Invitation"
-        className="object-fill w-2/4 drop-shadow-xl"
+        className="object-fill w-3/4 drop-shadow-xl"
       ></img>
     </div>
   );

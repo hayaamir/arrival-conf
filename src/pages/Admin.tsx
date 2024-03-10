@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
 import { getGuests } from "../DB/api";
 import { Guest } from "../types";
 
 export default function Admin() {
   const [guestsArray, setGuests] = useState<Guest[]>([]);
+  const [filterApplied, setFilterApplied] = useState(false);
 
   useEffect(() => {
     allGuests();
   }, []);
-
-  useEffect(() => {}, [guestsArray]);
 
   async function allGuests() {
     try {
@@ -26,6 +26,40 @@ export default function Admin() {
     }
   }
 
+  const guestsNumber = useMemo(() => {
+    return guestsArray.reduce((a, c) => {
+      if (c.coming) {
+        return a + 1 + c.guests.length;
+      }
+      return a;
+    }, 0);
+  }, [guestsArray]);
+
+  const glutenSum = useMemo(() => {
+    return guestsArray.reduce((a, c) => {
+      if (c.coming) {
+        return a + c.gluten_free;
+      }
+      return a;
+    }, 0);
+  }, [guestsArray]);
+
+  const veganSum = useMemo(() => {
+    return guestsArray.reduce((a, c) => {
+      if (c.coming) {
+        return a + c.vegan;
+      }
+      return a;
+    }, 0);
+  }, [guestsArray]);
+
+  const filteredGuests = useMemo(() => {
+    if (filterApplied) {
+      return guestsArray.filter((guest) => guest.coming);
+    }
+    return guestsArray;
+  }, [filterApplied, guestsArray]);
+
   return (
     <>
       <div
@@ -33,29 +67,44 @@ export default function Admin() {
         style={{ backgroundImage: `url('./background.png')` }}
       >
         <div className="overflow-x-auto">
+          <div>
+            <button
+              className="btn mt-5 mb-5 mr-5"
+              onClick={() => setFilterApplied(!filterApplied)}
+            >
+              {filterApplied
+                ? "הצג את כל האורחים"
+                : "הצג רק את האורחים המגיעים"}
+            </button>
+          </div>
           <table className="table">
             <thead>
               <tr>
                 <th></th>
-                <th className="text-lg">שם האורח</th>
+                <th className="text-lg">
+                  שם האורח - סה"כ נרשמים: {guestsNumber}
+                </th>
+                <th className="text-lg">באים?</th>
                 <th className="text-lg">טלפון</th>
-                <th className="text-lg">אמייל</th>
                 <th className="text-lg">רשימת אורחים נוספים</th>
-                <th className="text-lg">מנות ללא גלוטן</th>
-                <th className="text-lg">מנות טבעוניות</th>
+                <th className="text-lg">
+                  מנות ללא גלוטן - סה"כ מנות: {glutenSum}
+                </th>
+                <th className="text-lg">
+                  מנות טבעוניות - סה"כ מנות: {veganSum}
+                </th>
               </tr>
             </thead>
             <tbody>
-              {guestsArray && guestsArray.length > 0 ? (
-                guestsArray.map((guest, index) => (
+              {filteredGuests.length > 0 ? (
+                filteredGuests.map((guest, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>
-                      {guest.first_name}
-                      {guest.last_name}
+                      {guest.first_name} {guest.last_name}
                     </td>
+                    <td>{guest.coming ? "כן!" : "לא..."}</td>
                     <td>{guest.phone}</td>
-                    <td>{guest.email}</td>
                     <td>
                       {guest.guests.map((g, i) => (
                         <span key={i}>
@@ -69,10 +118,8 @@ export default function Admin() {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={7}>
-                    <span className="loading loading-ring loading-lg"></span>
-                  </td>
+                <tr className="flex items-center justify-center">
+                  <td className="loading loading-ring loading-lg "></td>
                 </tr>
               )}
             </tbody>

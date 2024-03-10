@@ -5,7 +5,7 @@ export default function Confirm() {
         className="bg-cover min-h-screen flex justify-center items-center"
         style={{ backgroundImage: `url('./background.png')` }}
       >
-        <div className="text-lg text-center flex flex-col justify-center items-center">
+        <div className="text-lg text-center flex flex-col justify-center items-center ml-6 mr-6">
           <img src="/Wine glasses.png" width="300" alt="Wine glasses" />
           <p className="text-xl	font-bold	">תודה רבה על העדכון</p>
           <p>

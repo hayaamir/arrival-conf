@@ -1,10 +1,25 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+// import { z } from "zod";
 
 import Plus from "../icons/plus";
 import { createGuest } from "../DB/api";
 import { Guest } from "../types";
 import ErrorBar from "./ErrorBar";
+
+const msg =
+  "ניתן להזמין עד עשר מנות ללא גלוטן, במקרה הצורך אנא צור קשר עם איטה ספרנאי או גלי אמיר";
+
+// const guestSchema = z.object({
+//   first_name: z.string(),
+//   last_name: z.string(),
+//   phone: z.string(),
+//   guests: z.array(z.object({ name: z.string() })),
+//   gluten_free: z.number().min(0).max(10, { message: msg }),
+//   vegan: z.number().min(0).max(10, { message: msg }),
+//   coming: z.string(),
+//   not_coming: z.string().optional(),
+// });
 
 export default function Form() {
   const navigate = useNavigate();
@@ -63,7 +78,7 @@ export default function Form() {
                   message: "שם פרטי ארוך מדי, אנא הזן עד 15 תווים",
                 },
                 pattern: {
-                  value: /^[א-ת]+$/i,
+                  value: /^[א-ת\s]+$/i,
                   message:
                     "שם פרטי מכיל תווים שאינם אותיות בעברית, אנא נסה שוב",
                 },
@@ -91,7 +106,7 @@ export default function Form() {
                   message: "שם משפחה ארוך מדי, אנא הזן עד 15 תווים",
                 },
                 pattern: {
-                  value: /^[א-ת]+$/i,
+                  value: /^[א-ת\s]+$/i,
                   message:
                     "שם משפחה מכיל תווים שאינם אותיות בעברית, אנא נסה שוב",
                 },
@@ -122,25 +137,6 @@ export default function Form() {
           <ErrorBar error={errors.phone} />
         </div>
 
-        <div>
-          <div className="mt-3">
-            <input
-              type="email"
-              placeholder="אימייל"
-              {...register("email", {
-                required: "אימייל הינו חובה",
-                pattern: {
-                  value: /^\S+@\S+$/i,
-                  message: "ישנה טעות בכתובת המייל, אנא נסה שוב",
-                },
-              })}
-              aria-invalid={errors.email ? "true" : "false"}
-              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-slate-400 sm:text-sm sm:leading-6 text-right"
-            />
-          </div>
-        </div>
-        <ErrorBar error={errors.email} />
-
         <div>* אין צורך לרשום ילדים מגיל שש ומטה</div>
 
         <label>
@@ -166,7 +162,7 @@ export default function Form() {
                           message: "שם מלא ארוך מדי, אנא הזן עד 15 תווים",
                         },
                         pattern: {
-                          value: /^[א-ת]+$/i,
+                          value: /^[א-ת\s]+$/i,
                           message: "אנא הזן שם בעברית בלבד",
                         },
                       })}
@@ -243,11 +239,8 @@ export default function Form() {
               type="number"
               placeholder="0"
               {...register("gluten_free", {
-                validate: (value) => {
-                  if (value < 0 || value > 10 || isNaN(value)) {
-                    return "ניתן להזמין עד עשר מנות ללא גלוטן, במקרה הצורך אנא צור קשר עם איטה ספרנאי או גלי אמיר";
-                  }
-                },
+                min: { value: 0, message: msg },
+                max: { value: 10, message: msg },
               })}
             />
             <ErrorBar error={errors.gluten_free} />
@@ -261,11 +254,8 @@ export default function Form() {
               type="number"
               placeholder="0"
               {...register("vegan", {
-                validate: (value) => {
-                  if (value < 0 || value > 10 || isNaN(value)) {
-                    return "ניתן להזמין עד עשר מנות ללא גלוטן, במקרה הצורך אנא צור קשר עם איטה ספרנאי או גלי אמיר";
-                  }
-                },
+                min: { value: 0, message: msg },
+                max: { value: 10, message: msg },
               })}
             />
             <ErrorBar error={errors.vegan} />
@@ -274,7 +264,7 @@ export default function Form() {
 
         <div className="card-actions justify-right mb-4">
           <button
-            className="btn btn-md bg-[#3c4f5b] text-white 	hover:bg-[#bfb58b]"
+            className="btn btn-md bg-[#3c4f5b] text-white hover:bg-[#bfb58b]"
             type="submit"
           >
             אישור
