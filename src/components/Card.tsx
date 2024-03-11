@@ -5,7 +5,7 @@ import MapPin from "../icons/map-pin";
 export default function Card() {
   return (
     <div className="text-center pb-8">
-      <p className="text-3xl mb-4">
+      <p className="text-xl mb-4">
         אנו שמחים ונרגשים להזמין אתכם לחגוג עמנו את יום נישואינו
       </p>
 
