@@ -1,86 +1,86 @@
-import { useEffect, useMemo, useState } from "react";
+// import { useEffect, useMemo, useState } from "react";
 
-import { getGuests } from "../DB/api";
-import { Guest } from "../types";
-import supabase from "../DB/supabase";
+// import { getGuests } from "../DB/api";
+// import { Guest } from "../types";
+// import supabase from "../DB/supabase";
 
 export default function Admin() {
-  const [guestsArray, setGuests] = useState<Guest[]>([]);
-  const [filterApplied, setFilterApplied] = useState(false);
+  // const [guestsArray, setGuests] = useState<Guest[]>([]);
+  // const [filterApplied, setFilterApplied] = useState(false);
 
-  useEffect(() => {
-    allGuests();
-  }, []);
+  // useEffect(() => {
+  //   allGuests();
+  // }, []);
 
-  useEffect(() => {
-    const sub = supabase
-      .channel("custom-update-channel")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "guests" },
-        (payload) => {
-          setGuests((prev) => [...prev, payload.new as Guest]);
-        }
-      )
-      .subscribe();
+  // useEffect(() => {
+  //   const sub = supabase
+  //     .channel("custom-update-channel")
+  //     .on(
+  //       "postgres_changes",
+  //       { event: "INSERT", schema: "public", table: "guests" },
+  //       (payload) => {
+  //         setGuests((prev) => [...prev, payload.new as Guest]);
+  //       }
+  //     )
+  //     .subscribe();
 
-    return () => {
-      sub.unsubscribe();
-    };
-  }, []);
+  //   return () => {
+  //     sub.unsubscribe();
+  //   };
+  // }, []);
 
-  async function allGuests() {
-    try {
-      const { guests, error } = await getGuests();
-      if (error) {
-        console.error("Error fetching guests:", error);
-        return;
-      }
-      if (guests) {
-        setGuests(guests);
-      }
-    } catch (error) {
-      console.error("Error fetching guests:", error);
-    }
-  }
+  // async function allGuests() {
+  //   try {
+  //     const { guests, error } = await getGuests();
+  //     if (error) {
+  //       console.error("Error fetching guests:", error);
+  //       return;
+  //     }
+  //     if (guests) {
+  //       setGuests(guests);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching guests:", error);
+  //   }
+  // }
 
-  const guestsNumber = useMemo(() => {
-    return guestsArray.reduce((a, c) => {
-      if (c.coming) {
-        if (c.guests && c.guests.length > 0 && c.guests[0].name !== "") {
-          return a + 1 + c.guests.length;
-        } else {
-          return a + 1;
-        }
-      }
-      return a;
-    }, 0);
-  }, [guestsArray]);
+  // const guestsNumber = useMemo(() => {
+  //   return guestsArray.reduce((a, c) => {
+  //     if (c.coming) {
+  //       if (c.guests && c.guests.length > 0 && c.guests[0].name !== "") {
+  //         return a + 1 + c.guests.length;
+  //       } else {
+  //         return a + 1;
+  //       }
+  //     }
+  //     return a;
+  //   }, 0);
+  // }, [guestsArray]);
 
-  const glutenSum = useMemo(() => {
-    return guestsArray.reduce((a, c) => {
-      if (c.coming) {
-        return a + c.gluten_free;
-      }
-      return a;
-    }, 0);
-  }, [guestsArray]);
+  // const glutenSum = useMemo(() => {
+  //   return guestsArray.reduce((a, c) => {
+  //     if (c.coming) {
+  //       return a + c.gluten_free;
+  //     }
+  //     return a;
+  //   }, 0);
+  // }, [guestsArray]);
 
-  const veganSum = useMemo(() => {
-    return guestsArray.reduce((a, c) => {
-      if (c.coming) {
-        return a + c.vegan;
-      }
-      return a;
-    }, 0);
-  }, [guestsArray]);
+  // const veganSum = useMemo(() => {
+  //   return guestsArray.reduce((a, c) => {
+  //     if (c.coming) {
+  //       return a + c.vegan;
+  //     }
+  //     return a;
+  //   }, 0);
+  // }, [guestsArray]);
 
-  const filteredGuests = useMemo(() => {
-    if (filterApplied) {
-      return guestsArray.filter((guest) => guest.coming);
-    }
-    return guestsArray;
-  }, [filterApplied, guestsArray]);
+  // const filteredGuests = useMemo(() => {
+  //   if (filterApplied) {
+  //     return guestsArray.filter((guest) => guest.coming);
+  //   }
+  //   return guestsArray;
+  // }, [filterApplied, guestsArray]);
 
   // return (
   //   <>
@@ -153,10 +153,12 @@ export default function Admin() {
   return (
     <>
       <div
-        className="bg-cover min-h-screen"
+        className="bg-cover min-h-screen flex justify-center items-center"
         style={{ backgroundImage: `url('./background.png')` }}
       >
-        <div> אינך מורשה להיות כאן 🚫</div>
+        <div className="text-center font-bold text-4xl">
+          אינך מורשה להיות כאן 🚫
+        </div>
       </div>
     </>
   );
